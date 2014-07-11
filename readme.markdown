@@ -24,11 +24,12 @@ git clone https://github.com/abracadaber/Sublime-Text-Redmine-Plugin.git Redmine
 
 Settings
 --------
-For the plugin to work, you will need to update Redmine.sublime-settings
+For the plugin to work, you will need to update settings
 
 Add your redmine url, user id, username, and password, then your set.
 
-`Redmine.sublime-settings`
+You can access plugin setting via the menu Preferences / Package Settings / Redmine and then Settings - Default or Settings - User.
+Generally you should leave the default settings as-is and add your own settings to user settings
 
 	{
 		// Redmine URL
