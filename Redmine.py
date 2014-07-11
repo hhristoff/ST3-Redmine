@@ -1,40 +1,58 @@
-import urllib2, base64, json
-import sublime, sublime_plugin
+import json
+import urllib.request
+
+import sublime
+import sublime_plugin
+
 
 class RedmineManager():
     def __init__(self):
         self.settings = {}
-        settings = sublime.load_settings(__name__ + '.sublime-settings')
+        settings = sublime.load_settings('Redmine.sublime-settings')
         self.settings['username'] = settings.get('username')
         self.settings['password'] = settings.get('password')
         self.settings['redmine_url'] = settings.get('redmine_url')
         self.settings['redmine_user_id'] = settings.get('redmine_user_id')
 
     def list_stuff_to_do(self):
-        request = urllib2.Request(self.settings['redmine_url'] + "/issues.json?assigned_to_id=" + self.settings["redmine_user_id"])
-        base64string = base64.encodestring('%s:%s' % (self.settings['username'], self.settings['password'])).replace('\n', '')
-        request.add_header("Authorization", "Basic %s" % base64string)
-        result = urllib2.urlopen(request)
-        data = json.load(result)
+        request = urllib.request.Request(self.settings['redmine_url'] +
+                                         "/issues.json?assigned_to_id=" +
+                                         self.settings["redmine_user_id"])
+        auth_handler = urllib.request.HTTPBasicAuthHandler()
+        auth_handler.add_password("Redmine API",
+                                  self.settings["redmine_url"],
+                                  self.settings["username"],
+                                  self.settings["password"])
+        opener = urllib.request.build_opener(auth_handler)
+        urllib.request.install_opener(opener)
+        response = urllib.request.urlopen(request)
+        data = json.loads(response.read().decode())
         issues = data["issues"]
         return issues
 
+
 class StuffToDoCommand(sublime_plugin.WindowCommand):
+    def __init__(self, *a, **ka):
+        super(StuffToDoCommand, self).__init__(*a, **ka)
+        self.issues = None
+        self.issue_names = []
+
     def on_done(self, picked):
         if picked == -1:
             return
         issue = self.issues[picked]
         url = self.manager.settings['redmine_url'] + "/issues/" + str(issue["id"])
-        self.window.run_command('open_url',
-            {'url': url})
+        self.window.run_command('open_url', {'url': url})
+
+    def async_load(self):
+        self.issues = self.manager.list_stuff_to_do()
+        for issue in self.issues:
+            issue_entry = []
+            issue_entry.append(issue["subject"] + " (" + str(issue["id"]) + ")")
+            issue_entry.append(issue["description"][0:85])
+            self.issue_names.append(issue_entry)
+        self.window.show_quick_panel(self.issue_names, self.on_done)
 
     def run(self):
-        self.manager = RedmineManager();
-        self.issues = self.manager.list_stuff_to_do()
-        self.issue_names = []
-        for issue in self.issues:
-                issue_entry = []
-                issue_entry.append(issue["subject"] + " (" + str(issue["id"]) +")")
-                issue_entry.append(issue["description"][0:85])
-                self.issue_names.append(issue_entry)
-        self.window.show_quick_panel(self.issue_names, self.on_done)
+        self.manager = RedmineManager()
+        sublime.set_timeout_async(self.async_load, 0)
