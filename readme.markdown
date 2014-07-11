@@ -4,6 +4,7 @@ Sublime Text 3 Redmine
 Overview
 --------
 View your assigned redmine issues in the quick panel, and opens your selection in a web browser.
+This plugin is [Sublime-Text-Redmine-Plugin] by [blakeanderson], reworked for ST3
 
 Installation
 ------------
@@ -18,7 +19,7 @@ Go to your Sublime Text 3 `Packages` directory
 and clone the repository using the command below:
 
 ``` shell
-git clone https://github.com/blakeanderson/Sublime-Text-Redmine-Plugin.git Redmine
+git clone https://github.com/abracadaber/Sublime-Text-Redmine-Plugin.git Redmine
 ```
 
 Settings
