@@ -53,3 +53,6 @@ Usage
 Keys:
  'Command' (OSX)
  'Ctrl' (Linux / Windows)
+
+ [ianepperson]: https://github.com/ianepperson
+ [Sublime-Text-Redmine-Plugin]: https://github.com/blakeanderson/Sublime-Text-Redmine-Plugin
