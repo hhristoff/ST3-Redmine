@@ -1,4 +1,4 @@
-Sublime Text 2 Redmine
+Sublime Text 3 Redmine
 =========================
 
 Overview
@@ -8,12 +8,12 @@ View your assigned redmine issues in the quick panel, and opens your selection i
 Installation
 ------------
 
-Go to your Sublime Text 2 `Packages` directory
+Go to your Sublime Text 3 `Packages` directory
 
- - OS X: `~/Library/Application Support/Sublime Text 2/Packages/`
- - Windows: `%APPDATA%/Sublime Text 2/Packages/`
- - Linux: `~/.Sublime Text 2/Packages/`
- - Ubuntu: `~/.config/sublime-text-2/Packages/`
+ - OS X: `~/Library/Application Support/Sublime Text 3/Packages/`
+ - Windows: `%APPDATA%/Sublime Text 3/Packages/`
+ - Linux: `~/.Sublime Text 3/Packages/`
+ - Ubuntu: `~/.config/sublime-text-3/Packages/`
 
 and clone the repository using the command below:
 
