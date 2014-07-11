@@ -24,7 +24,7 @@ git clone https://github.com/abracadaber/Sublime-Text-Redmine-Plugin.git Redmine
 
 Settings
 --------
-For the plugin to work, you will need to update settings
+For the plugin to work, you will need to update settings.
 
 Add your redmine url, user id, username, and password, then your set.
 
