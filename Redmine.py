@@ -45,11 +45,20 @@ class StuffToDoCommand(sublime_plugin.WindowCommand):
         self.window.run_command('open_url', {'url': url})
 
     def async_load(self):
+        self.issue_names = []
         self.issues = self.manager.list_stuff_to_do()
         for issue in self.issues:
             issue_entry = []
-            issue_entry.append(issue["subject"] + " (" + str(issue["id"]) + ")")
+            issue_entry.append("#"+str(issue["id"])+" "+issue["project"]["name"] +": "+ issue["subject"] + " (" + str(issue["done_ratio"]) + "%)")
+            issue_entry.append(issue["tracker"]["name"] +" / "+ issue["status"]["name"] + " / " + issue["priority"]["name"])
+            issue_entry.append("Author: "+issue["author"]["name"])
             issue_entry.append(issue["description"][0:85])
+            if "due_date" in issue:
+                issue_entry.append("From: "+issue["start_date"] +" To: "+ issue["due_date"])
+            else:
+                issue_entry.append("From: "+issue["start_date"])
+            if "estimated_hours" in issue:
+                issue_entry.append("Estimated Hours: "+str(issue["estimated_hours"]))
             self.issue_names.append(issue_entry)
         self.window.show_quick_panel(self.issue_names, self.on_done)
 
